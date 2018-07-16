@@ -1,0 +1,41 @@
+@(message: String, items: List[MusicFileItem], style: String = "scala")
+
+@main("Music Server") {
+    <section id="top">
+        <div class="wrapper">
+            <h1>@message</h1>
+        </div>
+    </section>
+
+    <article>
+        <div id="content" class="wrapper doc">
+            <article>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>File id</td>
+                            <td>File name</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    @items.map {
+                        case MusicFileItem(fileId, fileName) => {
+                            <tr>
+                                <td>@fileId</td>
+                                <td>@fileName</td>
+                            </tr>
+                        }
+                    }
+
+                    </tbody>
+                </table>
+            </article>
+
+            <aside>
+
+            </aside>
+
+        </div>
+    </article>
+}

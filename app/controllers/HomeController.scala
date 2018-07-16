@@ -21,10 +21,8 @@ class HomeController @Inject()(musicService: MusicFileRepository, cc: Controller
   }
 
   def retrieve: Action[AnyContent] = Action.async { implicit request =>
-    musicService.getAll.map { i => Ok(views.html.index("Item retrieved: " + i.toList ))
+    musicService.getAll.map { i => Ok(views.html.list("Items retrieved.", i))
     }
   }
-
-
 
 }
