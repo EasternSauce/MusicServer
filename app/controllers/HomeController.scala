@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import models.MusicFileItem
+import models.{MusicFileData, MusicFileId}
 import models.dao.MusicFileRepository
 import play.api.mvc._
 
@@ -15,7 +15,7 @@ class HomeController @Inject()(musicService: MusicFileRepository, cc: Controller
   }
 
   def insert(id: Int, name: String): Action[AnyContent] = Action.async { implicit request =>
-    musicService.create(MusicFileItem(id, name)).map { _ =>
+    musicService.create(MusicFileData(MusicFileId(id.toString), name)).map { _ =>
       Ok(views.html.index("Item added."))
     }
   }

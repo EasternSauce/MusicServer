@@ -1,4 +1,4 @@
-@(message: String, items: List[MusicFileItem], style: String = "scala")
+@(message: String, items: List[MusicFileData], style: String = "scala")
 
 @main("Music Server") {
     <section id="top">
@@ -20,7 +20,7 @@
                     <tbody>
 
                     @items.map {
-                        case MusicFileItem(fileId, fileName) => {
+                        case MusicFileData(fileId, fileName) => {
                             <tr>
                                 <td>@fileId</td>
                                 <td>@fileName</td>

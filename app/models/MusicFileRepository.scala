@@ -3,7 +3,7 @@ package models.dao
 import anorm.SqlParser.{scalar, _}
 import anorm._
 import javax.inject.Inject
-import models.{DatabaseExecutionContext, MusicFileItem}
+import models.{DatabaseExecutionContext, MusicFileData, MusicFileId}
 import play.api.db._
 
 import scala.concurrent.Future
@@ -11,7 +11,7 @@ import scala.concurrent.Future
 class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecutionContext) {
   val db = dbApi.database("default")
 
-  def create(musicFile: MusicFileItem) = Future {
+  def create(musicFile: MusicFileData) = Future {
     db.withConnection { implicit c =>
       SQL(
         """
@@ -19,13 +19,13 @@ class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecution
           | VALUES
           |   ({file_id}, {file_name});
         """.stripMargin).on(
-        "file_id" -> musicFile.fileId,
+        "file_id" -> musicFile.fileId.underlying,
         "file_name" -> musicFile.fileName
       ).executeInsert()
     }
   }(ec)
 
-  def delete(musicFile: MusicFileItem) = {
+  def delete(musicFile: MusicFileData) = {
     db.withConnection { implicit c =>
       SQL(
         """
@@ -33,13 +33,13 @@ class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecution
           | WHERE `file_id`={file_id} AND `file_name`={file_name}
           | LIMIT 1;
         """.stripMargin).on(
-        "file_id" -> musicFile.fileId,
+        "file_id" -> musicFile.fileId.underlying,
         "file_name" -> musicFile.fileName
       ).executeUpdate()
     }
   }
 
-  def exists(musicFile: MusicFileItem): Boolean = {
+  def exists(musicFile: MusicFileData): Boolean = {
     db.withConnection { implicit c =>
       val parser = scalar[Int].single
       val result = SQL(
@@ -48,7 +48,7 @@ class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecution
           | FROM `music_files`
           | WHERE `file_id`={file_id} AND `file_name`={file_name};
         """.stripMargin).on(
-        "file_id" -> musicFile.fileId,
+        "file_id" -> musicFile.fileId.underlying,
         "file_name" -> musicFile.fileName
       ).as(parser)
 
@@ -56,7 +56,7 @@ class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecution
     }
   }
 
-  def index(file_id: Int): MusicFileItem = {
+  def index(file_id: Int): MusicFileData = {
     db.withConnection { implicit c =>
       val result: Option[Int ~ String] = SQL(
         """
@@ -67,12 +67,12 @@ class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecution
         "file_id" -> file_id
       ).as((int("file_id") ~ str("file_name")).singleOpt)
 
-      MusicFileItem(result.get._1,result.get._2)
+      MusicFileData(MusicFileId(result.get._1.toString),result.get._2)
 
     }
   }
 
-  def getAll: Future[List[MusicFileItem]] = Future {
+  def getAll: Future[List[MusicFileData]] = Future {
     db.withConnection { implicit c =>
       val result: List[Int ~ String] = SQL(
         """
@@ -80,7 +80,7 @@ class MusicFileRepository @Inject()(dbApi: DBApi)(implicit ec: DatabaseExecution
               """
       ).executeQuery().as((int("file_id") ~ str("file_name")).*)
 
-      result.collect { case i => MusicFileItem(i._1, i._2) }
+      result.collect { case i => MusicFileData(MusicFileId(i._1.toString), i._2) }
     }
   }(ec)
 

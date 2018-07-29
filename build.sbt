@@ -17,3 +17,8 @@ unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/
 libraryDependencies += "org.playframework.anorm" %% "anorm" % "2.6.1"
 
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.44"
+
+libraryDependencies += "net.logstash.logback" % "logstash-logback-encoder" % "4.11"
+
+
+libraryDependencies += "com.netaporter" %% "scala-uri" % "0.4.16"
