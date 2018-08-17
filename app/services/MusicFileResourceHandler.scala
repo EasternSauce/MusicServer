@@ -1,7 +1,7 @@
-package models
+package services
 
 import javax.inject.{Inject, Provider}
-import models.dao.MusicFileRepository
+import models.MusicFileData
 import play.api.MarkerContext
 import play.api.libs.json._
 

@@ -1,4 +1,4 @@
-package models
+package services
 
 import akka.actor.ActorSystem
 import javax.inject.{Inject, Singleton}

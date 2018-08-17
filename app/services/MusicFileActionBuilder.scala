@@ -1,4 +1,4 @@
-package models
+package services
 
 import javax.inject.Inject
 import net.logstash.logback.marker.LogstashMarker

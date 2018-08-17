@@ -1,6 +1,8 @@
-package models
+package services
 
+import controllers.MusicFileController
 import javax.inject.Inject
+import models.MusicFileId
 import play.api.routing.Router.Routes
 import play.api.routing.SimpleRouter
 import play.api.routing.sird._
@@ -20,12 +22,6 @@ class MusicFileRouter @Inject()(controller: MusicFileController) extends SimpleR
   override def routes: Routes = {
     case GET(p"/") =>
       controller.index
-//
-//    case POST(p"/") =>
-//      controller.process
-//
-//    case GET(p"/$id") =>
-//      controller.show(id)
   }
 
 }

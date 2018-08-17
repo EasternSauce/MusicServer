@@ -7,14 +7,11 @@
 GET     /                           controllers.HomeController.index
 
 
+POST    /musicfile/:id/:name/:loc   controllers.HomeController.insert(id: Integer, name: String, loc: String)
 
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-POST    /music/:id/:name            controllers.HomeController.insert(id:Integer,name:String)
-
-GET     /retrieve                   controllers.HomeController.retrieve
+GET     /indexAll                   controllers.HomeController.indexAll
 
 ->      /musicfiles                 models.MusicFileRouter
+
+GET     /file/:id                   controllers.HomeController.getMusicFile(id: Integer)
 

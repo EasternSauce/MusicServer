@@ -20,7 +20,7 @@
                     <tbody>
 
                     @items.map {
-                        case MusicFileData(fileId, fileName) => {
+                        case MusicFileData(fileId, fileName, _) => {
                             <tr>
                                 <td>@fileId</td>
                                 <td>@fileName</td>
